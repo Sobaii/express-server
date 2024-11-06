@@ -1,0 +1,85 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id              String          @id @default(uuid())
+  email           String          @unique
+  picture         String?         @default("")
+  password        String
+  createdAt       DateTime        @default(now())
+  updatedAt       DateTime        @updatedAt
+  session         Session?        
+  authProviders   AuthProvider[]  
+  spreadsheets    Spreadsheet[]
+
+  @@index([email])
+}
+
+model Session {
+  id        String   @id @default(uuid())
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  userId    String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model AuthProvider {
+  id            String     @id @default(uuid())
+  provider      String     // Name of the OAuth provider (e.g., 'google', 'github', 'facebook')
+  providerId    String     @unique // Unique ID for the user from the provider (e.g., Google ID, GitHub ID)
+  accessToken   String     
+  refreshToken  String?     
+  userId        String
+  user          User       @relation(fields: [userId], references: [id])
+
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+
+  @@index([providerId])
+}
+
+
+model Spreadsheet {
+  id            String        @id @default(uuid())
+  userId        String
+  name          String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @default(now())
+  lastOpened    DateTime      @default(now())
+  fileKey       String?
+  expenses      Expense[]
+  user          User          @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Expense {
+  id              String        @id @default(uuid())
+  spreadsheetId   String
+  fileKey         String?
+  transactionDate String?
+  company         String?
+  currency        String?
+  total           Float?        @default(0)
+  subtotal        Float?        @default(0)
+  totalTax        Float?        @default(0)
+  vendorPhone     String?
+  street          String?
+  gratuity        Float?        @default(0)
+  city            String?
+  state           String?
+  country         String?
+  zipCode         String?
+  category        String?
+  spreadsheet     Spreadsheet   @relation(fields: [spreadsheetId], references: [id])
+
+  @@index([spreadsheetId])
+}

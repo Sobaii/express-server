@@ -1,22 +1,22 @@
-import { NextFunction, Response } from "express";
+import { NextFunction, Request, Response, RequestHandler } from "express";
 import {
   InternalServerError,
   NotFoundError,
   UnauthorizedError,
 } from "../errors/ApiErrors.js";
 import cookies from "../cookies.js";
-import { AuthenticatedRequest } from "../interfaces/requestInterfaces.js";
 import prisma from "../prisma/index.js";
 
-const ensureAuthenticated = async (
-  req: AuthenticatedRequest,
+const ensureAuthenticated: RequestHandler = async (
+  req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const sessionId = cookies.get(req, "sessionId");
     if (!sessionId) {
-      return next(new UnauthorizedError("Unauthorized"));
+      next(new UnauthorizedError("Unauthorized"));
+      return;
     }
 
     const session = await prisma.session.findUnique({
@@ -31,17 +31,19 @@ const ensureAuthenticated = async (
     });
 
     if (!session || session.expiresAt < new Date()) {
-      return res.status(401).json({ error: "Session expired or invalid" });
+      res.status(401).json({ error: "Session expired or invalid" });
+      return;
     }
 
     if (!session.user) {
-      return next(new NotFoundError("User not found"));
+      next(new NotFoundError("User not found"));
+      return;
     }
+    
     req.session = session;
-
     next();
   } catch (error) {
-    return next(new InternalServerError("An unexpected error occurred"));
+    next(new InternalServerError("An unexpected error occurred"));
   }
 };
 

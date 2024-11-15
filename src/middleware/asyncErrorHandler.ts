@@ -1,14 +1,13 @@
 import { NextFunction, Request, Response } from "express";
-import { AuthenticatedRequest } from "../interfaces/requestInterfaces.js";
 
 const asyncHandler = (
   fn: (
-    req: AuthenticatedRequest,
+    req: Request,
     res: Response,
     next: NextFunction,
   ) => Promise<any>,
 ) =>
-(req: AuthenticatedRequest, res: Response, next: NextFunction) => {
+(req: Request, res: Response, next: NextFunction) => {
   Promise.resolve(fn(req, res, next)).catch(next);
 };
 

@@ -10,7 +10,6 @@ import {
 import { InternalServerError } from "../errors/ApiErrors.js";
 import cookies from "../cookies.js";
 import prisma from "../prisma/index.js";
-import { AuthenticatedRequest } from "../interfaces/requestInterfaces.js";
 import { add } from "date-fns";
 import { createRandomString } from "../utils/createRandomString.js";
 
@@ -43,7 +42,7 @@ const handleGoogleLogin = async (req: Request, res: Response) => {
   res.status(200).json({ url: authorizeUrl });
 };
 
-const getUserGoogleInfo = async (req: AuthenticatedRequest, res: Response) => {
+const getUserGoogleInfo = async (req: Request, res: Response) => {
   const googleAuthProvider = req.session?.user.authProviders.find(
     (provider) => provider.provider === "google"
   );
@@ -150,7 +149,7 @@ const handleGoogleCallback = async (req: Request, res: Response) => {
 };
 
 // Renew the access token with the refresh token
-const refreshAccessToken = async (req: AuthenticatedRequest, res: Response) => {
+const refreshAccessToken = async (req: Request, res: Response) => {
   const googleAuthProvider = req.session?.user.authProviders.find(
     (provider) => provider.provider === "google"
   );

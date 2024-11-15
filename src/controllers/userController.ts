@@ -3,14 +3,13 @@ import bcrypt from "bcrypt";
 import { s3GetFileSignedUrl, s3UploadFile } from "../services/s3Service.js";
 import { USER_SPREADSHEET_BUCKET_NAME } from "../utils/constants.js";
 import cookies from "../cookies.js";
-import { AuthenticatedRequest } from "../interfaces/requestInterfaces.js";
 import { NotFoundError, ValidationError } from "../errors/ApiErrors.js";
 import prisma from "../prisma/index.js";
 import asyncHandler from "../middleware/asyncErrorHandler.js";
 import { add } from "date-fns";
 import { Expense } from "@prisma/client";
 
-const authenticateUser = async (req: AuthenticatedRequest, res: Response) => {
+const authenticateUser = async (req: Request, res: Response) => {
   res.status(200).json(req.session?.user);
 };
 
@@ -88,7 +87,7 @@ const loginUser = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({ message: "Login successful" });
 });
 
-const logoutUser = async (req: AuthenticatedRequest, res: Response) => {
+const logoutUser = async (req: Request, res: Response) => {
   await prisma.session.delete({
     where: {
       id: req.session?.id,
@@ -98,7 +97,7 @@ const logoutUser = async (req: AuthenticatedRequest, res: Response) => {
   res.status(200).json({ message: "Logged out" });
 };
 
-const updateUser = async (req: AuthenticatedRequest, res: Response) => {
+const updateUser = async (req: Request, res: Response) => {
   const updatedUser = await prisma.user.update({
     where: { id: req.session?.userId },
     data: req.body,
@@ -106,7 +105,7 @@ const updateUser = async (req: AuthenticatedRequest, res: Response) => {
   res.status(200).json(updatedUser);
 };
 
-const deleteUserExpense = async (req: AuthenticatedRequest, res: Response) => {
+const deleteUserExpense = async (req: Request, res: Response) => {
   const { expenses, spreadsheetId } = req.body;
 
   const spreadsheet = await prisma.spreadsheet.findFirst({
@@ -128,7 +127,7 @@ const deleteUserExpense = async (req: AuthenticatedRequest, res: Response) => {
   res.status(200).json({ message: "Expenses deleted" });
 };
 
-const updateUserExpense = async (req: AuthenticatedRequest, res: Response) => {
+const updateUserExpense = async (req: Request, res: Response) => {
   const { expenses, spreadsheetId } = req.body;
 
   const spreadsheet = await prisma.spreadsheet.findFirst({
@@ -159,7 +158,7 @@ const updateUserExpense = async (req: AuthenticatedRequest, res: Response) => {
 };
 
 const updateUserSpreadsheetName = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ) => {
   const { name, spreadsheetId } = req.body;
@@ -175,7 +174,7 @@ const updateUserSpreadsheetName = async (
 };
 
 const updateUserSpreadsheetScreenshot = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ) => {
   if (!req.file) {
@@ -195,7 +194,7 @@ const updateUserSpreadsheetScreenshot = async (
 };
 
 const getUserSpreadsheetsInfo = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response
 ) => {
   const spreadsheets = await prisma.spreadsheet.findMany({

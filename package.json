@@ -4,11 +4,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-  "test": "echo \"Error: no test specified\" && exit 1",
-  "dev": "tsx watch ./src/server.ts",
-  "start": "tsx ./src/server.ts",
-  "build": "npx prisma generate --schema=./src/prisma/schema.prisma && tsc"
-},
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx watch ./src/server.ts",
+    "start": "tsx ./src/server.ts",
+    "build": "npx prisma generate --schema=./src/prisma/schema.prisma && tsc"
+  },
   "author": "",
   "license": "ISC",
   "description": "",

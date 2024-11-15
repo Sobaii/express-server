@@ -4,17 +4,16 @@ import { s3GetFileSignedUrl, s3UploadFile } from "../services/s3Service.js";
 import { analyzeFile } from "../services/ocrService.js";
 import { RECEIPT_BUCKET_NAME } from "../utils/constants.js";
 import { NotFoundError, UnauthorizedError, ValidationError } from "../errors/ApiErrors.js";
-import { AuthenticatedRequest } from "../interfaces/requestInterfaces.js";
 import asyncHandler from "../middleware/asyncErrorHandler.js";
 import prisma from "../prisma/index.js"; 
 import { Expense } from "@prisma/client";
 
-const createSpreadsheet = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+const createSpreadsheet = asyncHandler(async (req: Request, res: Response) => {
   const { spreadsheetName } = req.body;
   const spreadsheet = await prisma.spreadsheet.create({
     data: {
       name: spreadsheetName,
-      userId: req.session?.userId
+      userId: req.session.userId
     }
   })
   res.status(200).json(spreadsheet);
@@ -26,7 +25,7 @@ const getS3FileUrl = asyncHandler(async (req: Request, res: Response) => {
   res.status(200).json({ url });
 });
 
-const uploadExpenses = asyncHandler(async (req: AuthenticatedRequest, res: Response) => {
+const uploadExpenses = asyncHandler(async (req: Request, res: Response) => {
   if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
     throw new ValidationError("No files uploaded");
   }
@@ -62,7 +61,7 @@ const uploadExpenses = asyncHandler(async (req: AuthenticatedRequest, res: Respo
 });
 
 
-const getSpreadsheet = asyncHandler(async (req: AuthenticatedRequest, res: Response) => { 
+const getSpreadsheet = asyncHandler(async (req: Request, res: Response) => { 
   const { spreadsheetId } = req.params; 
   const spreadsheet = await prisma.spreadsheet.update({
     where: { id: spreadsheetId, userId: req.session?.userId },
@@ -77,7 +76,7 @@ const getSpreadsheet = asyncHandler(async (req: AuthenticatedRequest, res: Respo
 
 
 const downloadExpensesXLSX = asyncHandler(async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ) => {
    
@@ -134,7 +133,7 @@ const downloadExpensesXLSX = asyncHandler(async (
   res.status(200).send(buffer);
 });
 
-const deleteSpreadsheet = asyncHandler(async (req: AuthenticatedRequest, res: Response) => { 
+const deleteSpreadsheet = asyncHandler(async (req: Request, res: Response) => { 
   const { spreadsheetId } = req.body;
   await prisma.spreadsheet.delete({
     where: { id: spreadsheetId, userId: req.session?.userId },

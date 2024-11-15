@@ -15,7 +15,6 @@ export const AWS_ACCESS_KEY_ID = getEnvVar("AWS_ACCESS_KEY_ID");
 export const AWS_SECRET_ACCESS_KEY = getEnvVar("AWS_SECRET_ACCESS_KEY");
 export const AWS_REGION = getEnvVar("AWS_REGION");
 export const PORT = getEnvVar("PORT");
-export const MONGODB_URI = getEnvVar("MONGODB_URI");
 export const OPENAI_API_KEY = getEnvVar("OPENAI_API_KEY");
 export const JWT_ACCESS_SECRET = getEnvVar("JWT_ACCESS_SECRET");
 export const JWT_REFRESH_SECRET = getEnvVar("JWT_REFRESH_SECRET");

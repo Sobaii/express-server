@@ -1,49 +1,100 @@
-// This file defines a set of custom API errors that should only be used in the API/controller layer
+import { ErrorResponse } from '../types/error.types';
 
-class ApiError extends Error {
+export class ApiError extends Error {
+  readonly statusCode: number;
+  readonly isOperational: boolean;
+  readonly code: string;
+  readonly details?: unknown;
+
   constructor(
-    public name: string,
-    public statusCode: number,
-    public isOperational: boolean,
-    public message: string,
-    public isCustomError: boolean = true
+    name: string,
+    statusCode: number,
+    isOperational: boolean,
+    message: string,
+    code: string,
+    details?: unknown
   ) {
     super(message);
-    Error.captureStackTrace(this);
+    this.name = name;
+    this.statusCode = statusCode;
+    this.isOperational = isOperational;
+    this.code = code;
+    this.details = details;
+    Error.captureStackTrace(this, this.constructor);
+  }
+
+  toJSON(): ErrorResponse {
+    return {
+      status: 'error',
+      message: this.message,
+      code: this.code,
+      timestamp: new Date().toISOString(),
+      stack: this.stack,
+      details: this.details
+    };
   }
 }
 
-class InternalServerError extends ApiError {
+export class InternalServerError extends ApiError {
   constructor(
-    message = "Internal Server Error",
-    isOperational: boolean = true,
+    message = 'An unexpected error occurred',
+    details?: unknown
   ) {
-    super("Internal Server Error", 500, isOperational, message);
+    super(
+      'Internal Server Error',
+      500,
+      false,
+      message,
+      'INTERNAL_SERVER_ERROR',
+      details
+    );
   }
 }
 
-class ValidationError extends ApiError {
-  constructor(message = "Bad Request") {
-    super("Bad Request", 400, true, message);
+export class ValidationError extends ApiError {
+  constructor(
+    message = 'Invalid input data',
+    details?: unknown
+  ) {
+    super(
+      'Validation Error',
+      400,
+      true,
+      message,
+      'VALIDATION_ERROR',
+      details
+    );
   }
 }
 
-class NotFoundError extends ApiError {
-  constructor(message = "Not Found") {
-    super("Not Found", 404, true, message);
+export class NotFoundError extends ApiError {
+  constructor(
+    message = 'Resource not found',
+    details?: unknown
+  ) {
+    super(
+      'Not Found',
+      404,
+      true,
+      message,
+      'NOT_FOUND',
+      details
+    );
   }
 }
 
-class UnauthorizedError extends ApiError {
-  constructor(message = "Unauthorized") {
-    super("Unauthorized", 401, true, message);
+export class UnauthorizedError extends ApiError {
+  constructor(
+    message = 'Authentication required',
+    details?: unknown
+  ) {
+    super(
+      'Unauthorized',
+      401,
+      true,
+      message,
+      'UNAUTHORIZED',
+      details
+    );
   }
 }
-
-export {
-  ApiError,
-  InternalServerError,
-  NotFoundError,
-  UnauthorizedError,
-  ValidationError,
-};

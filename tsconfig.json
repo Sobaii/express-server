@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./interfaces"],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "target": "ES6",
     "module": "ESNext",
     "outDir": "./build",

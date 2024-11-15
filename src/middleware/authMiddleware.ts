@@ -43,7 +43,7 @@ const ensureAuthenticated: RequestHandler = async (
     req.session = session;
     next();
   } catch (error) {
-    next(new InternalServerError("An unexpected error occurred", error));
+    next(new InternalServerError("An unexpected error occurred"));
   }
 };
 

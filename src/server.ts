@@ -7,7 +7,7 @@ import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import {expenseRoutes, oAuthRoutes, userRoutes} from "./routes/index.js"; 
 import { FRONTEND_URL, COOKIE_SECRET, PORT } from "./config/env.js";
-import errorHandler from "./middleware/errorHandler.js";
+// import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
 
@@ -52,7 +52,7 @@ app.get("/health", (req, res) => {
 });
 
 // Error handling middleware should be last
-app.use(errorHandler);
+// app.use(errorHandler);
 
 app.listen(PORT || 3001, () => {
   console.log(`Server running on port ${PORT || 3001}`);

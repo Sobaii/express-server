@@ -1,6 +1,19 @@
 import { Request } from "express";
-import { Session } from "@prisma/client";
+import { Session, User } from "@prisma/client";
+
+interface AuthProvider {
+  provider: string;
+  providerId: string;
+  accessToken: string;
+  refreshToken: string;
+}
+
+interface SessionWithUser extends Session {
+  user: User & {
+    authProviders: AuthProvider[];
+  };
+}
 
 export interface AuthenticatedRequest extends Request {
-  session?: Session
+  session?: SessionWithUser;
 }

@@ -36,7 +36,7 @@ model AuthProvider {
   provider      String     // Name of the OAuth provider (e.g., 'google', 'github', 'facebook')
   providerId    String     @unique // Unique ID for the user from the provider (e.g., Google ID, GitHub ID)
   accessToken   String     
-  refreshToken  String?     
+  refreshToken  String     
   userId        String
   user          User       @relation(fields: [userId], references: [id])
 

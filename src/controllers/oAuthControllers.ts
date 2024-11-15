@@ -44,7 +44,7 @@ const handleGoogleLogin = async (req: Request, res: Response) => {
 };
 
 const getUserGoogleInfo = async (req: AuthenticatedRequest, res: Response) => {
-  const googleAuthProvider = req.session.user.authProviders.find(
+  const googleAuthProvider = req.session?.user.authProviders.find(
     (provider) => provider.provider === "google"
   );
   if (!googleAuthProvider) {
@@ -151,7 +151,7 @@ const handleGoogleCallback = async (req: Request, res: Response) => {
 
 // Renew the access token with the refresh token
 const refreshAccessToken = async (req: AuthenticatedRequest, res: Response) => {
-  const googleAuthProvider = req.session.user.authProviders.find(
+  const googleAuthProvider = req.session?.user.authProviders.find(
     (provider) => provider.provider === "google"
   );
   if (!googleAuthProvider) {

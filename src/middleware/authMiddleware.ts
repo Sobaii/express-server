@@ -24,7 +24,7 @@ const ensureAuthenticated = async (
       include: {
         user: {
           include: {
-            authProviders: true,  
+            authProviders: true,
           },
         },
       },
@@ -37,7 +37,6 @@ const ensureAuthenticated = async (
     if (!session.user) {
       return next(new NotFoundError("User not found"));
     }
-
     req.session = session;
 
     next();

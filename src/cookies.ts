@@ -5,9 +5,14 @@ const cookies = {
     res: Response,
     name: string,
     value: string,
-    options: Record<string, any> = {},
+    options: Record<string, any> = {}
   ): void {
-    const defaultOptions = { httpOnly: true, secure: true, signed: true };
+    const defaultOptions = {
+      httpOnly: true,
+      secure: true,
+      signed: true,
+      sameSite: "none" as const,
+    };
     res.cookie(name, value, { ...defaultOptions, ...options });
   },
 

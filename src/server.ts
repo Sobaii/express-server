@@ -12,6 +12,7 @@ import { FRONTEND_URL, COOKIE_SECRET, PORT } from "./config/env.js";
 dotenv.config();
 
 const app: Application = express();
+
 app.use(cookieParser(COOKIE_SECRET));
 
 // Security middleware

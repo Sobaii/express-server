@@ -13,6 +13,7 @@ const ensureAuthenticated: RequestHandler = async (
   next: NextFunction
 ): Promise<void> => {
   try {
+    console.log("User's cookies:", req.cookies);
     const sessionId = cookies.get(req, "sessionId");
     if (!sessionId) {
       next(new UnauthorizedError("Unauthorized"));

@@ -9,6 +9,7 @@ const cookies = {
     options: Record<string, any> = {}
   ): void {
     const defaultOptions = {
+      httpOnly: true,
       secure: true,
       signed: true,
       sameSite: "none" as const,

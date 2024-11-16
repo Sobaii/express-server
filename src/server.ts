@@ -5,15 +5,13 @@ import bodyParser from "body-parser";
 import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
-import {expenseRoutes, oAuthRoutes, userRoutes} from "./routes/index.js"; 
+import { expenseRoutes, oAuthRoutes, userRoutes } from "./routes/index.js";
 import { FRONTEND_URL, COOKIE_SECRET, PORT } from "./config/env.js";
 // import errorHandler from "./middleware/errorHandler.js";
 
 dotenv.config();
 
 const app: Application = express();
-
-app.use(cookieParser(COOKIE_SECRET));
 
 // Security middleware
 app.use(helmet());
@@ -27,10 +25,14 @@ app.use(express.json());
 app.use(
   cors({
     origin: FRONTEND_URL,
-    methods: "GET,POST,PUT,DELETE, PATCH",
+    methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
-  }),
+    allowedHeaders: ["Content-Type", "Authorization"],
+    exposedHeaders: ["Set-Cookie"],
+  })
 );
+
+app.use(cookieParser(COOKIE_SECRET));
 
 app.set("trust proxy", 1); // Trust first proxy
 

@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import path from "path";
 
 const cookies = {
   set(
@@ -12,6 +13,8 @@ const cookies = {
       secure: true,
       signed: true,
       sameSite: "none" as const,
+      domain: "sobaii.ca",
+      path: "/",
     };
     res.cookie(name, value, { ...defaultOptions, ...options });
   },

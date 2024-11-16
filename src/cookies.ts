@@ -9,11 +9,9 @@ const cookies = {
     options: Record<string, any> = {}
   ): void {
     const defaultOptions = {
-      httpOnly: true,
       secure: true,
       signed: true,
       sameSite: "none" as const,
-      domain: "sobaii.ca",
       path: "/",
     };
     res.cookie(name, value, { ...defaultOptions, ...options });

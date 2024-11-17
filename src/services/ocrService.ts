@@ -89,15 +89,3 @@ function cleanAndParseJSON(jsonString: any) {
     return null;
   }
 }
-
-async function testanalyzeFile() {
-  try {
-    console.log("Analyzing receipt...");
-    const result = await analyzeFile(
-      "https://cdn.discordapp.com/attachments/715319623637270638/1279681497749655612/image.png?ex=66d553c4&is=66d40244&hm=0e8563e76416185ca8c91515b8082f27ba55eb7c69aa12efa4ef430c2e76116c&",
-    );
-    console.log("Analysis result:", JSON.stringify(result, null, 2));
-  } catch (error) {
-    console.error("Error in receipt analysis:", error);
-  }
-}

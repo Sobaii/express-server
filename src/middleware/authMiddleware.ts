@@ -4,7 +4,7 @@ import {
   NotFoundError,
   UnauthorizedError,
 } from "../errors/ApiErrors.js";
-import cookies from "../cookies.js";
+import cookies from "../utils/cookies.js";
 import prisma from "../prisma/index.js";
 
 const ensureAuthenticated: RequestHandler = async (

@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import { s3GetFileSignedUrl, s3UploadFile } from "../services/s3Service.js";
 import { USER_SPREADSHEET_BUCKET_NAME } from "../utils/constants.js";
-import cookies from "../cookies.js";
+import cookies from "../utils/cookies.js";
 import { NotFoundError, ValidationError } from "../errors/ApiErrors.js";
 import prisma from "../prisma/index.js";
 import asyncHandler from "../middleware/asyncErrorHandler.js";

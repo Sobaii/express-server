@@ -11,8 +11,8 @@ const cookies = {
     const defaultOptions = {
       httpOnly: true,
       secure: true,
+      signed: true,
       sameSite: 'none' as const,
-      path: "/",
     };
     res.cookie(name, value, { ...defaultOptions, ...options });
   },

@@ -8,7 +8,7 @@ import {
   SERVER_URL,
 } from "../config/env.js";
 import { InternalServerError } from "../errors/ApiErrors.js";
-import cookies from "../cookies.js";
+import cookies from "../utils/cookies.js";
 import prisma from "../prisma/index.js";
 import { add } from "date-fns";
 import { createRandomString } from "../utils/createRandomString.js";

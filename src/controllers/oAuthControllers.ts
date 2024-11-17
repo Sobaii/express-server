@@ -137,7 +137,6 @@ const handleGoogleCallback = async (req: Request, res: Response) => {
         expiresAt: add(new Date(), { days: 7 }),
       },
     });
-    console.log('session', session);
     // Set sessionId cookie
     cookies.set(res, "sessionId", session.id);
     ("redirecting to dashboard");

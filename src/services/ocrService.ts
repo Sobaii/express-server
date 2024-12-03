@@ -56,7 +56,7 @@ export async function analyzeFile(fileName: string) {
                   categories.join(
                     ", ",
                   )
-                }. Return the result as plain JSON. Do not include any markdown or code blocks. Date format: YYYY-MM-DD. Ensure number values are numbers, not strings. No additional text.`,
+                }. Return the result as plain JSON. Do not include any markdown or code blocks. Date format: YYYY-MM-DD. Ensure number values are strings, not numbers. No additional text.`,
             },
             {
               type: "image_url",

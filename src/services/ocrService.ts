@@ -52,11 +52,11 @@ export async function analyzeFile(fileName: string) {
             {
               type: "text",
               text:
-                `Extract from the first receipt you see: transactionDate, company, total, subtotal, totalTax, vendorPhone, street, gratuity, city, state, country, zipCode, and category. Be very meticulous about categorizing this receipt into one of the following categories: ${
+                `Extract from the first receipt you see: transactionDate, company, total, subtotal, totalTax, discount, vendorPhone, street, gratuity, city, state, country, zipCode, and category. Be very meticulous about categorizing this receipt into one of the following categories: ${
                   categories.join(
                     ", ",
                   )
-                }. Return the result as plain JSON. Do not include any markdown or code blocks. Date format: YYYY-MM-DD. Ensure number values are strings, not numbers. No additional text.`,
+                }. Return the result as plain JSON. Do not include any markdown or code blocks. Date format must be YYYY-MM-DD. Ensure number values are strings, not numbers. No additional text. If there is a discount, subtract it from the subtotal.`,
             },
             {
               type: "image_url",

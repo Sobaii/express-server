@@ -7,6 +7,7 @@ import { NotFoundError, UnauthorizedError, ValidationError } from "../errors/Api
 import asyncHandler from "../middleware/asyncErrorHandler.js";
 import prisma from "../prisma/index.js"; 
 import { Expense } from "@prisma/client";
+import { convertPdfToJpeg } from "../utils/convertPdfToJpeg.js";
 
 const createSpreadsheet = asyncHandler(async (req: Request, res: Response) => {
   const { spreadsheetName } = req.body;
@@ -26,25 +27,35 @@ const getS3FileUrl = asyncHandler(async (req: Request, res: Response) => {
 });
 
 const uploadExpenses = asyncHandler(async (req: Request, res: Response) => {
+  
   if (!req.files || !Array.isArray(req.files) || req.files.length === 0) {
+    console.log("No files uploaded");
     throw new ValidationError("No files uploaded");
   }
+  
   const { spreadsheetId } = req.body;
+  
   const processedResults = await Promise.all(
     (req.files as Express.Multer.File[]).map(async (file) => {
-      if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png") {
+      console.log("Processing file:", file.originalname);
+      
+      if (file.mimetype !== "image/jpeg" && file.mimetype !== "image/png" && file.mimetype !== "application/pdf") {
         throw new ValidationError("Unsupported file type");
       }
-      const fileBuffer = file.buffer;
+      
+      if (file.mimetype === "application/pdf") {
+        file.buffer = await convertPdfToJpeg(file.buffer);  
+        file.mimetype = "image/jpeg";
+      }
+      
       const fileKey = await s3UploadFile(
         RECEIPT_BUCKET_NAME,
-        fileBuffer,
+        file.buffer,
         file.mimetype,
       );
       const imageUrl = await s3GetFileSignedUrl(RECEIPT_BUCKET_NAME, fileKey);
       const data = await analyzeFile(imageUrl);
       const sanitizedData = JSON.parse(JSON.stringify(data).replace(/\0/g, ''));
-
       const expense = await prisma.expense.create({
         data: {
           ...sanitizedData,
@@ -52,11 +63,13 @@ const uploadExpenses = asyncHandler(async (req: Request, res: Response) => {
           fileKey: fileKey,
         },
       });
+      console.log("Expense created:", expense);
 
       return { ...expense, fileKey };
     }),
   );
 
+  console.log("All files processed successfully");
   res.status(200).json(processedResults);
 });
 

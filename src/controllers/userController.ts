@@ -10,7 +10,13 @@ import { add } from "date-fns";
 import { Expense } from "@prisma/client";
 
 const authenticateUser = async (req: Request, res: Response) => {
-  res.status(200).json(req.session?.user);
+  const user = req.session?.user;
+  if (user) {
+    const { email, picture } = user;
+    res.status(200).json({ email, picture });
+  } else {
+    res.status(404).json({ message: "User not found" });
+  }
 };
 
 const createUser = async (req: Request, res: Response) => {

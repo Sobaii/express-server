@@ -71,6 +71,7 @@ model Expense {
   total           String?      @default("0")
   subtotal        String?      @default("0")
   totalTax        String?      @default("0")
+  discount        String?      @default("0")
   vendorPhone     String?
   street          String?
   gratuity        String?      @default("0")

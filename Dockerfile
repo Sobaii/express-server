@@ -1,6 +1,11 @@
+# Use Node.js 18 Alpine image
 FROM node:18-alpine
 
+# Set working directory
 WORKDIR /app
+
+# Install OpenSSL 1.1
+RUN apk add --no-cache openssl1.1
 
 # Copy package files
 COPY package*.json ./

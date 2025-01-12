@@ -140,7 +140,7 @@ const handleGoogleCallback = async (req: Request, res: Response) => {
     // Set sessionId cookie
     cookies.set(res, "sessionId", session.id);
     ("redirecting to dashboard");
-    res.redirect(`${FRONTEND_URL}/dashboard`);
+    res.redirect(`${FRONTEND_URL}/app/dashboard`);
   } catch (err) {
     console.error(err);
     return res.redirect(`${FRONTEND_URL}/signup`);

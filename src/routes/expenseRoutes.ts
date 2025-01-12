@@ -1,5 +1,6 @@
 import { Router } from "express";
 import {
+  aggregateInbox,
   createSpreadsheet,
   deleteSpreadsheet,
   downloadExpensesXLSX,
@@ -28,5 +29,6 @@ router.post(
   downloadExpensesXLSX,
 );
 router.delete("/delete-spreadsheet", ensureAuthenticated, deleteSpreadsheet);
+router.post("/aggregate-inbox", ensureAuthenticated, aggregateInbox);
 
 export { router as expenseRoutes };

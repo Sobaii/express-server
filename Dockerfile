@@ -4,8 +4,8 @@ FROM node:18-alpine
 # Set working directory
 WORKDIR /app
 
-# Install OpenSSL 1.1
-RUN apk add --no-cache openssl1.1
+# Install OpenSSL 
+RUN apk add --no-cache openssl
 
 # Copy package files
 COPY package*.json ./

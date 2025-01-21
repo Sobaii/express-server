@@ -6,8 +6,22 @@ import helmet from "helmet";
 import rateLimit from "express-rate-limit";
 import cookieParser from "cookie-parser";
 import { expenseRoutes, oAuthRoutes, userRoutes } from "./routes/index.js";
-import { FRONTEND_URL, COOKIE_SECRET, PORT } from "./config/env.js";
-// import errorHandler from "./middleware/errorHandler.js";
+import {
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_REGION,
+  PORT,
+  OPENAI_API_KEY,
+  JWT_ACCESS_SECRET,
+  JWT_REFRESH_SECRET,
+  COOKIE_SECRET,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CLIENT_ID,
+  NODE_ENV,
+  SERVER_URL,
+  FRONTEND_URL,
+  DATABASE_URL
+} from "./config/env.js";
 
 dotenv.config();
 
@@ -48,7 +62,7 @@ app.use("/expenses", expenseRoutes);
 app.use("/users", userRoutes);
 app.use("/auth", oAuthRoutes);
 
-// ALB health check
+// npm health check
 app.get("/health", (req, res) => {
   res.status(200).send("OK");
 });
@@ -58,4 +72,22 @@ app.get("/health", (req, res) => {
 
 app.listen(PORT || 3001, () => {
   console.log(`Server running on port ${PORT || 3001}`);
+});
+
+
+console.log({
+  AWS_ACCESS_KEY_ID,
+  AWS_SECRET_ACCESS_KEY,
+  AWS_REGION,
+  PORT,
+  OPENAI_API_KEY,
+  JWT_ACCESS_SECRET,
+  JWT_REFRESH_SECRET,
+  COOKIE_SECRET,
+  GOOGLE_CLIENT_SECRET,
+  GOOGLE_CLIENT_ID,
+  NODE_ENV,
+  SERVER_URL,
+  FRONTEND_URL,
+  DATABASE_URL
 });

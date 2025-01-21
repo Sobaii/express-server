@@ -12,7 +12,7 @@ export async function convertPdfToJpeg(pdfBuffer: Buffer): Promise<Buffer> {
   // Initialize the conversion
   const convert = fromBuffer(pdfBuffer, {
     density: 450,
-    format: "jpeg",
+    format: "png",
     width: 768,
     height: 1024,
   });

@@ -73,21 +73,3 @@ app.get("/health", (req, res) => {
 app.listen(PORT || 3001, () => {
   console.log(`Server running on port ${PORT || 3001}`);
 });
-
-
-console.log({
-  AWS_ACCESS_KEY_ID,
-  AWS_SECRET_ACCESS_KEY,
-  AWS_REGION,
-  PORT,
-  OPENAI_API_KEY,
-  JWT_ACCESS_SECRET,
-  JWT_REFRESH_SECRET,
-  COOKIE_SECRET,
-  GOOGLE_CLIENT_SECRET,
-  GOOGLE_CLIENT_ID,
-  NODE_ENV,
-  SERVER_URL,
-  FRONTEND_URL,
-  DATABASE_URL
-});

@@ -12,7 +12,7 @@ import {
 import asyncHandler from "../middleware/asyncErrorHandler.js";
 import prisma from "../prisma/index.js";
 import { Expense } from "@prisma/client";
-import { convertPdfToJpeg } from "../utils/convertPdfToJpeg.js";
+import { convertPdfToPng } from "../utils/convertPdfToPng.js";
 import processEmailsConcurrently from "../services/gmailService.js";
 import { fileURLToPath } from "url";
 import path, { dirname } from "path";
@@ -55,7 +55,7 @@ const uploadExpenses = asyncHandler(async (req: Request, res: Response) => {
       }
 
       if (file.mimetype === "application/pdf") {
-        file.buffer = await convertPdfToJpeg(file.buffer);
+        file.buffer = await convertPdfToPng(file.buffer);
         file.mimetype = "image/jpeg";
       }
 
@@ -221,7 +221,7 @@ const aggregateInbox = asyncHandler(async (req: Request, res: Response) => {
 
 
       console.log("Converting PDF to JPEG...");
-      buffer = await convertPdfToJpeg(buffer);
+      buffer = await convertPdfToPng(buffer);
       if (!buffer || buffer.length === 0) {
         throw new Error("Converted buffer is empty.");
       }
